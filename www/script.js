@@ -86,6 +86,7 @@ function displayResult(predictions) {
 
 // Handle image upload and preview
 function handleImageUpload(event) {
+  resultDiv.textContent = "";
   const file = event.target.files[0];
   if (file) {
     const reader = new FileReader();
