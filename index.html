@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Classifier</title>
+    <script src="assets/tf.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .file-upload {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .file-upload label {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .file-upload label:hover {
+            background-color: #2980b9;
+        }
+        #imageUpload {
+            display: none;
+        }
+        #predictButton {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #predictButton:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #predictButton:hover:not(:disabled) {
+            background-color: #27ae60;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        #imagePreviewContainer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        #uploadStatus {
+            margin-top: 10px;
+            text-align: center;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plant Disease Classifier</h1>
+        <div class="file-upload">
+            <label for="imageUpload">Choose Image</label>
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+        <button id="predictButton" disabled>Classify Image</button>
+        <div id="uploadStatus">No image selected</div>
+        <div id="imagePreviewContainer">
+            <img id="imagePreview" alt="Image preview">
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
