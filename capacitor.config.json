@@ -1,5 +1,5 @@
 {
-  "appId": "plant.disease.detector.app",
-  "appName": "plant-disease-detector",
+  "appId": "plant.disease.classifer.app",
+  "appName": "plant-disease-classifier",
   "webDir": "www"
 }

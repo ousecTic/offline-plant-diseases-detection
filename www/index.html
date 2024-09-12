@@ -64,10 +64,10 @@
         #predictButton:hover:not(:disabled) {
             background-color: #27ae60;
         }
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
+        #uploadStatus {
+            margin-top: 10px;
             text-align: center;
+            color: #7f8c8d;
         }
         #imagePreviewContainer {
             margin-top: 20px;
@@ -80,10 +80,37 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             display: none;
         }
-        #uploadStatus {
-            margin-top: 10px;
+        #result {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        #result h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
             text-align: center;
-            color: #7f8c8d;
+        }
+        .result-item {
+            margin-bottom: 15px;
+        }
+        .result-label {
+            font-weight: bold;
+            color: #34495e;
+        }
+        .confidence-bar {
+            background-color: #ecf0f1;
+            height: 20px;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        .confidence-level {
+            height: 100%;
+            background-color: #3498db;
+            transition: width 0.5s ease-in-out;
         }
     </style>
 </head>

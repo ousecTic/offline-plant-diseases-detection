@@ -78,14 +78,26 @@ function displayResult(predictions) {
     .map((p, i) => ({ probability: p, classInfo: classIndices[i] }))
     .sort((a, b) => b.probability - a.probability)[0];
 
+  const confidencePercentage = (topPrediction.probability * 100).toFixed(2);
+
   const resultHTML = `
-    <h2>Prediction Result</h2>
-    <p><strong>Detected Condition:</strong> ${topPrediction.classInfo.name}</p>
-    <p><strong>Confidence:</strong> ${(topPrediction.probability * 100).toFixed(
-      2
-    )}%</p>
-    <p><strong>Description:</strong> ${topPrediction.classInfo.description}</p>
-  `;
+        <h2>Prediction Result</h2>
+        <div class="result-item">
+            <span class="result-label">Detected Condition:</span>
+            <span>${topPrediction.classInfo.name}</span>
+        </div>
+        <div class="result-item">
+            <span class="result-label">Confidence:</span>
+            <span>${confidencePercentage}%</span>
+            <div class="confidence-bar">
+                <div class="confidence-level" style="width: ${confidencePercentage}%"></div>
+            </div>
+        </div>
+        <div class="result-item">
+            <span class="result-label">Description:</span>
+            <p>${topPrediction.classInfo.description}</p>
+        </div>
+    `;
 
   resultDiv.innerHTML = resultHTML;
 }
