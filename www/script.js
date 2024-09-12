@@ -20,7 +20,7 @@ async function loadModel() {
   }
 }
 
-// Load the class indices (disease names)
+// Load the class indices (disease names and descriptions)
 async function loadClassIndices() {
   try {
     const response = await fetch("model/class_indices.json");
@@ -75,18 +75,24 @@ async function classifyImage() {
 // Display the classification result
 function displayResult(predictions) {
   const topPrediction = Array.from(predictions)
-    .map((p, i) => ({ probability: p, className: classIndices[i] }))
+    .map((p, i) => ({ probability: p, classInfo: classIndices[i] }))
     .sort((a, b) => b.probability - a.probability)[0];
 
-  resultDiv.textContent = `
-    Predicted Disease: ${topPrediction.className},
-    Confidence: ${(topPrediction.probability * 100).toFixed(2)}%
+  const resultHTML = `
+    <h2>Prediction Result</h2>
+    <p><strong>Detected Condition:</strong> ${topPrediction.classInfo.name}</p>
+    <p><strong>Confidence:</strong> ${(topPrediction.probability * 100).toFixed(
+      2
+    )}%</p>
+    <p><strong>Description:</strong> ${topPrediction.classInfo.description}</p>
   `;
+
+  resultDiv.innerHTML = resultHTML;
 }
 
 // Handle image upload and preview
 function handleImageUpload(event) {
-  resultDiv.textContent = "";
+  resultDiv.innerHTML = "";
   const file = event.target.files[0];
   if (file) {
     const reader = new FileReader();

@@ -1,5 +1,5 @@
 {
-  "appId": "com.example.app",
-  "appName": "plant-disease",
+  "appId": "plant.disease.detector.app",
+  "appName": "plant-disease-detector",
   "webDir": "www"
 }
