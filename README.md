@@ -30,7 +30,7 @@ A cross-platform application for detecting plant diseases offline using machine 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/offline-plant-diseases-detection.git
+git clone https://github.com/ousecTic/offline-plant-diseases-detection.git
 cd offline-plant-diseases-detection
 ```
 
