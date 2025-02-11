@@ -1,0 +1,23 @@
+{
+  "name": "plant-disease",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx cap open android",
+    "electron:start": "npx cap open @capacitor-community/electron",
+    "electron:build": "npx cap copy @capacitor-community/electron && cd electron && npm run electron:build-windows"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@capacitor/android": "^6.1.1",
+    "@capacitor/core": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor-community/electron": "^5.0.0"
+  }
+}

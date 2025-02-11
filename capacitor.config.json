@@ -1,0 +1,11 @@
+{
+  "appId": "plant.disease.classifer.app",
+  "appName": "plant-disease-classifier",
+  "webDir": "www",
+  "electron": {
+    "customUrlScheme": "plant-disease-classifier",
+    "deepLinkingEnabled": true,
+    "splashScreenEnabled": true,
+    "trayIconAndMenuEnabled": true
+  }
+}

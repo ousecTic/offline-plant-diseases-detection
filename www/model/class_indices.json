@@ -1,0 +1,154 @@
+{
+    "0": {
+        "name": "Apple Scab",
+        "description": "A fungal disease that causes dark, scaly lesions on apple leaves and fruit."
+    },
+    "1": {
+        "name": "Apple Black Rot",
+        "description": "A fungal disease that causes circular black or brown spots on apple leaves and fruit."
+    },
+    "2": {
+        "name": "Cedar Apple Rust",
+        "description": "A fungal disease that causes orange spots on apple leaves and fruit, requiring cedar trees to complete its life cycle."
+    },
+    "3": {
+        "name": "Healthy Apple",
+        "description": "No visible signs of disease on the apple plant."
+    },
+    "4": {
+        "name": "Healthy Blueberry",
+        "description": "No visible signs of disease on the blueberry plant."
+    },
+    "5": {
+        "name": "Cherry Powdery Mildew",
+        "description": "A fungal disease that causes a white, powdery coating on cherry leaves and fruit."
+    },
+    "6": {
+        "name": "Healthy Cherry",
+        "description": "No visible signs of disease on the cherry plant."
+    },
+    "7": {
+        "name": "Corn Gray Leaf Spot",
+        "description": "A fungal disease that causes rectangular, grayish-brown lesions on corn leaves."
+    },
+    "8": {
+        "name": "Corn Common Rust",
+        "description": "A fungal disease that causes small, round, reddish-brown pustules on corn leaves."
+    },
+    "9": {
+        "name": "Corn Northern Leaf Blight",
+        "description": "A fungal disease that causes long, elliptical, grayish-green lesions on corn leaves."
+    },
+    "10": {
+        "name": "Healthy Corn",
+        "description": "No visible signs of disease on the corn plant."
+    },
+    "11": {
+        "name": "Grape Black Rot",
+        "description": "A fungal disease that causes dark lesions on grape leaves and shriveled, mummified fruit."
+    },
+    "12": {
+        "name": "Grape Esca (Black Measles)",
+        "description": "A complex fungal disease that causes leaf discoloration and shriveling of grape berries."
+    },
+    "13": {
+        "name": "Grape Leaf Blight",
+        "description": "A fungal disease that causes small, dark, angular spots on grape leaves."
+    },
+    "14": {
+        "name": "Healthy Grape",
+        "description": "No visible signs of disease on the grape plant."
+    },
+    "15": {
+        "name": "Citrus Greening",
+        "description": "A bacterial disease that causes yellowing of citrus leaves and misshapen, bitter fruit."
+    },
+    "16": {
+        "name": "Peach Bacterial Spot",
+        "description": "A bacterial disease that causes small, dark lesions on peach leaves, fruit, and twigs."
+    },
+    "17": {
+        "name": "Healthy Peach",
+        "description": "No visible signs of disease on the peach plant."
+    },
+    "18": {
+        "name": "Bell Pepper Bacterial Spot",
+        "description": "A bacterial disease that causes small, dark, raised spots on pepper leaves and fruit."
+    },
+    "19": {
+        "name": "Healthy Bell Pepper",
+        "description": "No visible signs of disease on the bell pepper plant."
+    },
+    "20": {
+        "name": "Potato Early Blight",
+        "description": "A fungal disease that causes dark, target-like spots on potato leaves."
+    },
+    "21": {
+        "name": "Potato Late Blight",
+        "description": "A fungal disease that causes dark, water-soaked spots on potato leaves and stems."
+    },
+    "22": {
+        "name": "Healthy Potato",
+        "description": "No visible signs of disease on the potato plant."
+    },
+    "23": {
+        "name": "Healthy Raspberry",
+        "description": "No visible signs of disease on the raspberry plant."
+    },
+    "24": {
+        "name": "Healthy Soybean",
+        "description": "No visible signs of disease on the soybean plant."
+    },
+    "25": {
+        "name": "Squash Powdery Mildew",
+        "description": "A fungal disease that causes a white, powdery coating on squash leaves."
+    },
+    "26": {
+        "name": "Strawberry Leaf Scorch",
+        "description": "A fungal disease that causes reddish-purple spots on strawberry leaves."
+    },
+    "27": {
+        "name": "Healthy Strawberry",
+        "description": "No visible signs of disease on the strawberry plant."
+    },
+    "28": {
+        "name": "Tomato Bacterial Spot",
+        "description": "A bacterial disease that causes small, dark spots on tomato leaves and fruit."
+    },
+    "29": {
+        "name": "Tomato Early Blight",
+        "description": "A fungal disease that causes dark, target-like spots on tomato leaves."
+    },
+    "30": {
+        "name": "Tomato Late Blight",
+        "description": "A fungal disease that causes dark, water-soaked spots on tomato leaves and fruit."
+    },
+    "31": {
+        "name": "Tomato Leaf Mold",
+        "description": "A fungal disease that causes yellow spots on the upper side of tomato leaves and gray mold on the underside."
+    },
+    "32": {
+        "name": "Tomato Septoria Leaf Spot",
+        "description": "A fungal disease that causes small, circular spots with dark borders on tomato leaves."
+    },
+    "33": {
+        "name": "Tomato Spider Mites",
+        "description": "An arachnid pest that causes yellowing and stippling of tomato leaves."
+    },
+    "34": {
+        "name": "Tomato Target Spot",
+        "description": "A fungal disease that causes circular, target-like lesions on tomato leaves and fruit."
+    },
+    "35": {
+        "name": "Tomato Yellow Leaf Curl Virus",
+        "description": "A viral disease that causes yellowing and curling of tomato leaves."
+    },
+    "36": {
+        "name": "Tomato Mosaic Virus",
+        "description": "A viral disease that causes mottled green and yellow patches on tomato leaves."
+    },
+    "37": {
+        "name": "Healthy Tomato",
+        "description": "No visible signs of disease on the tomato plant."
+    }
+}

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Classifier</title>
+    <script src="assets/tf.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --success-color: #2ecc71;
+            --success-dark: #27ae60;
+            --background-color: #f0f4f8;
+            --card-background: #ffffff;
+            --text-color: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border-radius: 12px;
+            --spacing-sm: 10px;
+            --spacing-md: 20px;
+            --spacing-lg: 30px;
+            --spacing-xl: 2rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: var(--spacing-md);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        h2 {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .file-upload {
+            text-align: center;
+        }
+
+        .file-upload label {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-weight: 500;
+            font-size: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-upload label:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .file-upload label:active {
+            transform: translateY(0);
+        }
+
+        #imageUpload {
+            display: none;
+        }
+
+        .preview-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            margin: var(--spacing-md) 0;
+            text-align: center;
+            min-height: 200px;
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px dashed #dee2e6;
+            padding: var(--spacing-lg) var(--spacing-md);
+        }
+
+        .preview-container.has-image {
+            border: none;
+            background: white;
+            padding: var(--spacing-xl) var(--spacing-md);
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            width: auto;
+            height: auto;
+            border-radius: var(--border-radius);
+            object-fit: contain;
+            margin: var(--spacing-md) auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .preview-container::before {
+            content: '📷 No image selected';
+            color: #6c757d;
+            font-size: 1.1rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .preview-container.has-image {
+            border: none;
+            background: white;
+        }
+
+        .preview-container.has-image::before {
+            display: none;
+        }
+
+        .preview-container.has-image #imagePreview {
+            opacity: 1;
+        }
+
+        .sample-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-md);
+            background: var(--background-color);
+            border-radius: var(--border-radius);
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .sample-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: calc(var(--border-radius) - 4px);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .sample-image:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sample-image.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .or-divider {
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+            position: relative;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #ddd;
+        }
+
+        .or-divider::before { left: 0; }
+        .or-divider::after { right: 0; }
+
+        .action-button-container {
+            position: sticky;
+            bottom: var(--spacing-md);
+            z-index: 100;
+            padding: var(--spacing-sm);
+            text-align: center;
+            margin-top: var(--spacing-md);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: var(--success-color);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            background: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #predictButton {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: var(--spacing-md) 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #predictButton:disabled {
+            background-color: var(--text-secondary);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #predictButton:hover:not(:disabled) {
+            background-color: var(--success-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #predictButton:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        #result {
+            margin-top: var(--spacing-md);
+            background-color: var(--background-color);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-color);
+        }
+
+        .result-explanation {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .result-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .result-item {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #eee;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .result-item.primary {
+            background: white;
+            border-left: 6px solid #2196F3;
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.15);
+        }
+
+        .result-item.secondary {
+            border-left: 6px solid #78909C;
+        }
+
+        .result-item.tertiary {
+            border-left: 6px solid #B0BEC5;
+        }
+
+        .confidence-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .result-item.primary .confidence-label {
+            color: #2196F3;
+        }
+
+        .result-item.secondary .confidence-label {
+            color: #78909C;
+        }
+
+        .result-item.tertiary .confidence-label {
+            color: #B0BEC5;
+        }
+
+        .result-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .disease-name {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .confidence-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .result-item.primary .confidence-value {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+        }
+
+        .result-item.secondary .confidence-value {
+            background: rgba(120, 144, 156, 0.1);
+            color: #78909C;
+        }
+
+        .result-item.tertiary .confidence-value {
+            background: rgba(176, 190, 197, 0.1);
+            color: #B0BEC5;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: var(--spacing-sm) 0;
+        }
+
+        .result-item.primary .confidence-bar .confidence-level {
+            background-color: #2196F3;
+        }
+
+        .result-item.secondary .confidence-bar .confidence-level {
+            background-color: #78909C;
+        }
+
+        .result-item.tertiary .confidence-bar .confidence-level {
+            background-color: #B0BEC5;
+        }
+
+        .confidence-level {
+            height: 100%;
+            width: 0;
+            transition: width 0.8s ease-in-out;
+        }
+
+        .result-description {
+            color: #616161;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-sm);
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* Add loading animation styles */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary-light);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            position: absolute;
+            margin-top: 80px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Update button loading state */
+        .btn.loading {
+            position: relative;
+            cursor: not-allowed;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-md);
+            }
+
+            .sample-gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-sm);
+                padding: var(--spacing-sm);
+            }
+
+            #imagePreview {
+                max-height: 250px;
+            }
+
+            .result-items {
+                gap: var(--spacing-sm);
+            }
+
+            .result-item {
+                padding: var(--spacing-md);
+            }
+
+            .disease-name {
+                font-size: 1.1rem;
+            }
+
+            .confidence-value {
+                font-size: 0.85rem;
+                padding: 4px 10px;
+            }
+
+            .result-description {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-sm);
+            }
+
+            .sample-gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                padding: var(--spacing-sm);
+            }
+
+            .preview-container {
+                margin: var(--spacing-sm) 0;
+            }
+
+            #imagePreview {
+                max-height: 200px;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: none;
+                padding: 14px 20px;
+            }
+
+            .action-button-container {
+                background: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(8px);
+                margin: 0 calc(-1 * var(--spacing-sm));
+                padding: var(--spacing-sm);
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Processing image...</div>
+    </div>
+    
+    <div class="container">
+        <h1>Plant Disease Classifier</h1>
+        <div class="input-section">
+            <div class="file-upload">
+                <label for="imageUpload">📸 Choose Image</label>
+                <input type="file" id="imageUpload" accept="image/*" capture="environment">
+            </div>
+        </div>
+        <div class="or-divider">OR</div>
+        <h2>Select from Sample Images</h2>
+        <div id="sampleGallery" class="sample-gallery">
+            <!-- Sample images will be added here via JavaScript -->
+        </div>
+        <div class="action-button-container">
+            <button id="predictButton" disabled>🔍 Classify Disease</button>
+        </div>
+        <div class="preview-container">
+            <img id="imagePreview" alt="" src="">
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
